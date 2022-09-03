@@ -194,9 +194,10 @@ body {
 .landing {
     height: 75vh;
     /* background: burlywood; */
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     display: flex;
     margin: 5vh auto;
+    position: relative;
 }
 
 
@@ -397,7 +398,7 @@ body {
 
 .scroll-down {
     position: absolute;
-    bottom: 30px;
+    bottom: -30px;
     left: 50%;
     margin-left: -16px;
     display: block;
@@ -757,6 +758,10 @@ ul {
 
     .featured .mid p {
         font-size: 1.8rem;
+    }
+
+    .slide-details{
+        transform: translateY(-150%);
     }
 }
 
