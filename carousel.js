@@ -1,7 +1,15 @@
-const track = document.querySelector('.carousel-track');
-const slides = Array.from(track.children);
 const LButton = document.querySelector('.carousel__button--left');
 const RButton = document.querySelector('.carousel__button--right');
+const ham = document.querySelector('.ham');
+const mobileMenu = document.querySelector('.end');
+const blurr = document.querySelector('.body-blurr');
+
+ham.addEventListener('click', () => {
+    ham.classList.toggle('active');
+    mobileMenu.classList.toggle('active');
+    blurr.classList.toggle('active');
+});
+
 // const midIndex = Math.floor(slides.length / 2);
 // const midElement = slides[midIndex];
 // let slideIndex = midIndex;
@@ -15,8 +23,8 @@ const RButton = document.querySelector('.carousel__button--right');
 var directionForward = true;
 const slideTimeInMs = 3750;
 var carouselPaused = false;
-let slideIndex = 1;
-var width = track.getBoundingClientRect().width / slides.length;
+let slideIndex = midIndex + 1;
+var width = slideWidth;
 
 
 function sleep(ms) {
@@ -113,4 +121,6 @@ RButton.addEventListener('click', () => {
     slideIndex++;
     console.log('clicked');
 });
+
+
 

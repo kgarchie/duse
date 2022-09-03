@@ -11,49 +11,129 @@
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
     <link rel=" manifest" href="assets/favicon/site.webmanifest">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 </head>
 
 <body>
+    <div class="body-blurr"></div>
     <nav class="top-nav">
         <div class="start">
             <a href=""><img src="./assets/svgs/clothing.svg" alt=""></a>
             <span class="user-location"></span>
         </div>
         <div class="center">
-            <ul class="nav-links">
-                <li class="navlink"><a href="">New</a></li>
-                <li class="navlink"><a href="">Gallery</a></li>
-                <li class="navlink"><a href="">Jewellery</a></li>
-                <li class="navlink"><a href="">Collections</a></li>
-            </ul>
+            <span class="search"><span><img src="./assets/svgs/search_line.svg" alt=""></span><input type="text"
+                    placeholder="Search"></span>
         </div>
-        <div class="end">            
-            <div class="login"><a href="">Login</a></div>
-            <div class="heart"><img src="./assets/svgs/heart.svg" alt=""></div>
-            <div class="cart"><img src="./assets/svgs/cart.svg" alt=""></div>
+        <div class="ham">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div>
+        <div class="end">
+            <a class="login icon"><img src="./assets/svgs/login.svg" alt=""></a>
+            <a class="heart icon"><img src="./assets/svgs/heart.svg" alt=""></a>
+            <a class="cart icon"><img src="./assets/svgs/cart.svg" alt=""></a>
+            <div class="link-cell">
+                <ul class="nav-links">
+                    <li class="navlink"><a href="">New</a></li>
+                    <li class="navlink"><a href="">Gallery</a></li>
+                    <li class="navlink"><a href="">Jewellery</a></li>
+                    <li class="navlink"><a href="">Collections</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
+    <nav class="lower-nav">
+        <!-- i had to repeat this be sure to update both links or use a component to clone this part -->
+        <ul class="nav-links">
+            <li class="navlink"><a href="">New</a></li>
+            <li class="navlink"><a href="">Gallery</a></li>
+            <li class="navlink"><a href="">Jewellery</a></li>
+            <li class="navlink"><a href="">Collections</a></li>
+        </ul>
+    </nav>
     <section class="landing">
-        <div class="left-nav">
+        <!-- <div class="left-nav">
             <ul>
                 <li><img src="./assets/svgs/home.svg" alt=""></li>
                 <li><img src="./assets/svgs/about.svg" alt=""></li>
                 <li><img src="./assets/svgs/hang.svg" alt=""></li>
                 <li><img src="./assets/svgs/search.svg" alt=""></li>
             </ul>
-        </div>
+        </div> -->
         <div class="pop-up-carousel">
             <span class="carousel__button carousel__button--left"><img src="./assets/images/vectors/right-arrow-img.svg"
                     alt="" width="25" height="25"></span>
             <div class="carousel__track-container">
                 <ul class="carousel-track">
-                    <li class="carousel-slide current-slide"><img class="carousel-image"
-                            src="./assets/images/model1.jpg" alt=""></li>
-                    <li class="carousel-slide"><img class="carousel-image" src="./assets/images/model2.jpg" alt=""></li>
-                    <li class="carousel-slide"><img class="carousel-image" src="./assets/images/model3.jpg" alt=""></li>
-                    <li class="carousel-slide"><img class="carousel-image" src="./assets/images/model4.jpg" alt=""></li>
-                    <li class="carousel-slide"><img class="carousel-image" src="./assets/images/model5.jpg" alt=""></li>
+                    <li class="carousel-slide"><img class="carousel-image" src="./assets/images/model1.jpg" alt="">
+                        <div class="slide-details">
+                            <div class="card">
+                                <div class="card-blurr"></div>
+                                <div class="card-header">Card Header</div>
+                                <div class="card-body">
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, magni?</p>
+
+                                    <button>Buy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="carousel-slide"><img class="carousel-image" src="./assets/images/model2.jpg" alt="">
+
+                        <div class="slide-details">
+                            <div class="card">
+                                <div class="card-blurr"></div>
+                                <div class="card-header">Card Header</div>
+                                <div class="card-body">
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, magni?</p>
+
+                                    <button>Buy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="carousel-slide"><img class="carousel-image" src="./assets/images/model3.jpg" alt="">
+                        <div class="slide-details">
+                            <div class="card">
+                                <div class="card-blurr"></div>
+                                <div class="card-header">Card Header</div>
+                                <div class="card-body">
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, magni?</p>
+
+                                    <button>Buy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="carousel-slide"><img class="carousel-image" src="./assets/images/model4.jpg" alt="">
+                        <div class="slide-details">
+                            <div class="card">
+                                <div class="card-blurr"></div>
+                                <div class="card-header">Card Header</div>
+                                <div class="card-body">
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, magni?</p>
+
+                                    <button>Buy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="carousel-slide"><img class="carousel-image" src="./assets/images/model5.jpg" alt="">
+                        <div class="slide-details">
+                            <div class="card">
+                                <div class="card-blurr"></div>
+                                <div class="card-header">Card Header</div>
+                                <div class="card-body">
+                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores, magni?</p>
+
+                                    <button>Buy</button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <span class="carousel__button carousel__button--right"><img
@@ -64,15 +144,18 @@
                 <span class="carousel__indicator"></span>
             </div> -->
         </div>
-        <div class="right-pane"></div>
+        <!-- <div class="right-pane"></div> -->
         <a href="#offerings" class="scroll-down"></a>
     </section>
 
     <section class="featured">
         <div class="call-to-action">
             <div class="mid">
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-                <button>Shop Now</button>
+                <p>Talented designer with a flair for fashion.</p>
+                <div class="action-buttons">
+                    <button class="duse">About Duse</button>
+                    <button class="shop-now">Shop Now</button>
+                </div>
             </div>
         </div>
 
@@ -84,7 +167,7 @@
         </div>
     </section>
 
-    <section class="testimonials">
+    <section class="shop">
 
     </section>
 
@@ -133,6 +216,27 @@
             </div>
         </div>
     </footer>
+    <script>
+        const track = document.querySelector('.carousel-track');
+        const slides = Array.from(track.children);
+        const slideWidth = track.getBoundingClientRect().width / slides.length;
+        const midIndex = Math.floor(slides.length / 2);
+
+
+        function stageCarousel() {
+            track.style.transform = 'translateX(-' + slideWidth * midIndex + 'px)';
+            slides[midIndex].classList.add('current-slide');
+
+            return new Promise(resolve => setTimeout(resolve, 100));
+        }
+
+        async function finishStaging() {
+            await stageCarousel();
+            track.classList.add('transitionSpeed');
+        }
+
+        finishStaging();
+    </script>
     <script src="carousel.js"></script>
     <script src="script.js"></script>
 </body>
