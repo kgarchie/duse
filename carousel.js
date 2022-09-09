@@ -28,7 +28,7 @@ var width = slideWidth;
 
 
 function sleep(ms) {
-    if (carouselPaused == true) { return 0}
+    if (carouselPaused == true) { return 0 }
     else {
         return new Promise(resolve => setTimeout(resolve, ms));
     };
@@ -85,14 +85,14 @@ async function InitializeSlides() {
 
 InitializeSlides();
 
-
-document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === 'hidden') {
+// This won't work as intended = bugs noted TODO: make this efficient.
+track.addEventListener("visibilitychange", () => {
+    if (track.visibilityState === 'hidden') {
         carouselPaused = true;
-    } else if (document.visibilityState === 'visible' && document.activeElement !== LButton && document.activeElement !== RButton) {
+    } else if (track.visibilityState === 'visible' && document.activeElement !== LButton && document.activeElement !== RButton) {
         carouselPaused = false;
         InitializeSlides();
-    } else if (document.visibilityState === 'visible' && carouselPaused === true) {
+    } else if (track.visibilityState === 'visible' && carouselPaused === true) {
         async function awaitResume(params) {
             await sleep(4000);
             carouselPaused = false;
@@ -104,6 +104,7 @@ document.addEventListener("visibilitychange", () => {
 
 
 // Check if user has pressed any of the buttons so that carousel can pause
+// Use currentSlideindex - get it from the async function so that it's more responsive - if possible
 LButton.addEventListener('click', () => {
     carouselPaused = true;
     directionForward = false;
@@ -121,6 +122,5 @@ RButton.addEventListener('click', () => {
     slideIndex++;
     console.log('clicked');
 });
-
 
 
