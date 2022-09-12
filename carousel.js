@@ -27,6 +27,7 @@ let slideIndex = midIndex + 1;
 var width = slideWidth;
 
 
+
 function sleep(ms) {
     if (carouselPaused == true) { return 0 }
     else {
@@ -82,7 +83,6 @@ async function InitializeSlides() {
     console.log('Done sliding for now');
 }
 
-
 InitializeSlides();
 
 // This won't work as intended = bugs noted TODO: make this efficient.
@@ -93,7 +93,7 @@ track.addEventListener("visibilitychange", () => {
         carouselPaused = false;
         InitializeSlides();
     } else if (track.visibilityState === 'visible' && carouselPaused === true) {
-        async function awaitResume(params) {
+        async function awaitResume() {
             await sleep(4000);
             carouselPaused = false;
             InitializeSlides();
@@ -123,4 +123,48 @@ RButton.addEventListener('click', () => {
     console.log('clicked');
 });
 
+
+// Begining of card mini focus or fade blend somehow - figure it out man in and out carousel
+const cards = document.querySelectorAll('.shop-card');
+const cardArray = Array.from(cards);
+
+cardArray.forEach(element => {
+    const main_image = element.querySelector('.main-image');
+    const image_stack = Array.from(main_image.children);
+    var directionCardForward = true;
+    var holdCard = false;
+    var target_cardIndex = 0;
+
+    function popCard(target_cardIndex) {
+        var current_focus = main_image.querySelector('.focused');
+
+        current_focus.classList.remove('focused');
+        image_stack[target_cardIndex].classList.add('focused');
+    }
+
+    async function initialiseCardPop() {
+        while (!holdCard) {
+            await sleep(3000);
+
+            if (target_cardIndex >= image_stack.length - 1) {
+                directionCardForward = false;
+            } else if (target_cardIndex <= 0 && directionCardForward === false) {
+                directionCardForward = true;
+            }
+
+            if (directionCardForward === true) {
+                target_cardIndex++;
+            } else {
+                target_cardIndex--;
+            }
+
+            console.log('popped');
+            console.log(target_cardIndex);
+
+            popCard(target_cardIndex);
+        }
+    }
+
+    initialiseCardPop();
+});
 
