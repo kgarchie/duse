@@ -201,12 +201,7 @@ body {
     display: flex;
     margin: 5vh auto;
     position: relative;
-    overflow-x: hidden;
-}
-
-
-.featured-grid {
-    display: grid;
+    overflow: hidden;
 }
 
 .pop-up-carousel {
@@ -321,7 +316,7 @@ body {
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(30, 30, 30, 0.5);
     display: grid;
     place-items: center;
     width: 40px;
@@ -551,38 +546,17 @@ body {
     height: 40px;
 }
 
-.featured {
-    margin-top: 30px;
-    margin-bottom: 30px;
-}
-
-.featured .mid p {
-    font-family: var(--font-family-tertiary);
-    font-weight: 700;
-    font-size: 2.5rem;
-}
-
 
 .call-to-action {
     position: relative;
-    background-color: var(--cooler-white);
     min-height: 20vh;
-}
-
-
-.featured .mid {
-    width: 50vw;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
 }
 
 .action-buttons {
     margin-top: 10px;
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 1rem;
 }
@@ -604,6 +578,51 @@ body {
     border: 2px solid var(--accent);
 }
 
+.feedback{
+    padding: 10vh 0;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    background-color: var(--cooler-white);
+    margin: 10vh 0;
+}
+
+.feedback h1{
+    font-family: var(--font-family-tertiary);
+    font-size: 40px;
+}
+
+.form-div{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.email-div .form > *{
+    margin-top: 1.5rem;
+}
+
+.email-div{
+    width: 50%;
+}
+
+.form input,
+.form textarea{
+    padding: 0.7rem 1rem;
+    border-radius: 0;
+    border: 1px solid var(--primary);
+    font-family: inherit;
+}
+
+.form input:focus,
+.form textarea:focus{
+    outline: none;
+}
+
+.form input:focus::placeholder{
+    visibility: hidden;
+}
+
 .footer {
     min-height: 250px;
     color: aliceblue;
@@ -611,7 +630,6 @@ body {
     padding: 70px 0;
     width: 100vw;
 }
-
 
 .custom-container {
     max-width: 1170px;
@@ -881,8 +899,8 @@ ul {
         min-height: 70vh;
     }
 
-    .featured .mid {
-        width: 65vw;
+    .email-div{
+        width: 90%;
     }
 
     .call-to-action {
@@ -922,5 +940,4 @@ ul {
         row-gap: 7rem;
         width: 100%;
     }
-
 }
