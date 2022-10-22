@@ -1,0 +1,25 @@
+{
+  "name": "duse",
+  "version": "1.0.0",
+  "description": "Judy",
+  "main": "script.js",
+  "scripts": {
+    "dev": "sass --watch src/scss:dist/css",
+    "build": "copy src\\src_index.html dist && Xcopy src\\assets dist\\assets /E/H/C/I && Xcopy src\\js dist\\js && del dist\\index.html && ren dist\\src_index.html index.html && dist\\index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kgarchie/duse.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kgarchie/duse/issues"
+  },
+  "homepage": "https://github.com/kgarchie/duse#readme",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.5",
+    "sass": "^1.55.0"
+  }
+}
