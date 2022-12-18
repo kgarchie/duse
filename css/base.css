@@ -1,0 +1,42 @@
+:root {
+  font-family: "Mulish", sans-serif;
+  --font-family-secondary: "Anek Telugu", sans-serif;
+  --font-family-tertiary: "Edu VIC WA NT Beginner", cursive;
+  /* Pallate */
+  --coolor_one: #001219;
+  --cooler_two: #005F73;
+  --cooler_three: #0A9396;
+  --cooler-four: #94D2BD;
+  --cooler-five: #E9D8A6;
+  --cooler-six: #EE9B00;
+  --cooler-seven: #CA6702;
+  --cooler-eight: #BB3E03;
+  --cooler_nine: #AE2012;
+  --cooler_ten: #9B2226;
+  --cooler-eleven: #DE0D92;
+  --cooler-twelve: #1c1e7a;
+  --cooler-white: #f5f5f5;
+  --accent: #df208f;
+  --primary: hsl(220, 10%, 10%);
+}
+
+ul {
+  list-style: none;
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none;
+  color: var(--cooler-twelve);
+}
+
+body {
+  overflow-x: hidden;
+  position: relative;
+}
+
+.transitionSpeed {
+  transition: transform 0.5s ease-in-out;
+}
+
+/*# sourceMappingURL=base.css.map */

@@ -1,0 +1,154 @@
+.landing {
+  height: 80vh;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
+.landing .pop-up-carousel {
+  height: 100%;
+  max-width: 100vw;
+  margin: 0 auto;
+}
+.landing .pop-up-carousel .carousel__button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  background-color: var(--cooler-white);
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  z-index: 5;
+  opacity: 0.5;
+  backdrop-filter: blur(10px);
+}
+.landing .pop-up-carousel .carousel__button > img {
+  opacity: 0.5;
+}
+.landing .pop-up-carousel .carousel__button:is(:hover, :focus) > img {
+  opacity: 1;
+}
+.landing .pop-up-carousel .carousel__button--left {
+  left: 10px;
+  transform: rotate(180deg) translateY(50%);
+}
+.landing .pop-up-carousel .carousel__button--right {
+  right: 10px;
+}
+.landing .pop-up-carousel .carousel__track-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide {
+  position: relative;
+  transition: transform 0.5s ease-in-out;
+  overflow: hidden;
+  width: 100%;
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide .carousel-image {
+  display: flex;
+  margin: auto;
+  max-width: 100vw;
+  height: 80vh;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide .slide-details {
+  position: absolute;
+  transform: translateY(-100%);
+  width: 100%;
+  max-height: 50%;
+  min-height: 30%;
+  color: var(--cooler-white);
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide .slide-details .card-screen {
+  width: 50%;
+  min-width: 300px;
+  margin: auto;
+  border-radius: 10px;
+  padding: 2rem;
+  position: absolute;
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide .slide-details .card {
+  width: 50%;
+  min-width: 300px;
+  margin: auto;
+  border-radius: 10px;
+  padding: 2rem;
+  background-color: hsla(220deg, 10%, 10%, 0.5);
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide .slide-details .card .card-header {
+  font-size: larger;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  text-align: center;
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide .slide-details .card .card-body p {
+  font-size: 1rem;
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide .slide-details .card .card-body > p:first-child {
+  margin-bottom: 1rem;
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide .slide-details .card .card-body > p:first-child:before {
+  background-color: var(--cooler-white);
+  width: 50%;
+  height: 2px;
+  position: absolute;
+  content: "";
+  margin-top: -0.5rem;
+  left: 0;
+  transform: translateX(50%);
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide .slide-details .card .card-body > p:nth-child(2) {
+  display: inline-block;
+  width: 50%;
+  font-weight: bolder;
+  color: var(--accent);
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide .slide-details .card .card-body button {
+  display: inline-block;
+  width: 40%;
+  border: solid var(--cooler-white);
+  padding: 0.5rem 1rem;
+  color: var(--primary);
+  font-weight: bold;
+  letter-spacing: 0.15ch;
+  border-radius: 0;
+  background-color: var(--cooler-white);
+  cursor: pointer;
+  border-radius: 5px;
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide .slide-details .card:hover {
+  background-color: var(--primary);
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide:not(.current-slide) {
+  transform: scale(0.75);
+  transition: transform 0.5s ease-in-out;
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide:not(.current-slide) .slide-details {
+  transform: translateY(0);
+  transition: transform 0.5s ease-in-out;
+}
+.landing .pop-up-carousel .carousel__track-container .carousel-track .carousel-slide:is(.current-slide) .slide-details {
+  transition: transform 0.5s ease-in-out;
+}
+
+@media screen and (max-width: 768px) {
+  .landing {
+    margin-top: 1.8rem;
+    margin-bottom: 2rem;
+  }
+}
+
+/*# sourceMappingURL=landing.css.map */
