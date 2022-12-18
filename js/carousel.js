@@ -10,12 +10,14 @@ function moveCarousel(directionForward) {
         const nextSlide = currentSlide.nextElementSibling;
 
         currentSlide.classList.remove('current-slide');
+        track.style.transform = 'translateX(-' + slideWidth * slideIndex + 'px)';
         nextSlide.classList.add('current-slide');
     } else {
         slideIndex--;
         const nextSlide = currentSlide.previousElementSibling;
 
         currentSlide.classList.remove('current-slide');
+        track.style.transform = 'translateX(-' + slideWidth * slideIndex + 'px)';
         nextSlide.classList.add('current-slide');
     }
     console.log(slideIndex);
@@ -31,3 +33,13 @@ RButton.addEventListener('click', () => {
     moveCarousel(true);
 })
 
+
+function autoMoveCarousel() {
+    if (slideIndex === slides.length - 1) {
+        moveCarousel(false);
+    } else {
+        moveCarousel(true);
+    }
+}
+
+setInterval(autoMoveCarousel, 3000);
