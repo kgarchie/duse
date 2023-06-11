@@ -9,13 +9,20 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "start": "nuxt start"
+    "start": "nuxt start",
+    "drizzle:generate": "drizzle-kit generate:mysql",
+    "drizzle:push": "drizzle-kit push:mysql",
+    "migrate": "yarn drizzle:generate && yarn drizzle:push"
   },
   "devDependencies": {
+    "@types/node": "^18",
     "concurrently": "^8.2.0",
+    "drizzle-kit": "^0.18.1",
     "nuxt": "^3.4.3",
-    "sass": "^1.63.3",
-    "@types/node": "^18"
+    "sass": "^1.63.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "drizzle-orm": "^0.26.5",
+    "mysql2": "^3.3.4"
+  }
 }
