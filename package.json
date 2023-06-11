@@ -1,25 +1,21 @@
 {
   "name": "duse",
-  "version": "1.0.0",
-  "description": "Judy",
-  "main": "script.js",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "sass --watch src/scss:dist/css",
-    "build": "copy src\\src_index.html dist && Xcopy src\\assets dist\\assets /E/H/C/I && Xcopy src\\js dist\\js && del dist\\index.html && ren dist\\src_index.html index.html && dist\\index.html"
+    "dev": "concurrently \"nuxt dev\" \"sass --watch scss/main.scss:assets/css/style.css\"",
+    "build": "sass src/main.scss:assets/css/style.css && nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "start": "nuxt start"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kgarchie/duse.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/kgarchie/duse/issues"
-  },
-  "homepage": "https://github.com/kgarchie/duse#readme",
   "devDependencies": {
-    "parcel-bundler": "^1.12.5",
-    "sass": "^1.55.0"
-  }
+    "concurrently": "^8.2.0",
+    "nuxt": "^3.4.3",
+    "sass": "^1.63.3",
+    "@types/node": "^18"
+  },
+  "dependencies": {}
 }
