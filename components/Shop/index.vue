@@ -12,10 +12,13 @@
       <ShopCard/>
       <ShopCard/>
       <ShopCard/>
+      <ShopCard/>
     </div>
   </section>
 </template>
 
 <style scoped>
-
+.shop {
+  overflow-x: hidden;
+}
 </style>

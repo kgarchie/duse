@@ -4,7 +4,6 @@
 
 <template>
   <section class="feedback">
-    <h1>Get your custom fit</h1>
     <div class="email-div">
       <div class="form">
         <div class="form-div">

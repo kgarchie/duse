@@ -9,4 +9,3 @@ export const users = mysqlTable('users', {
 })
 
 export type User = InferModel<typeof users>
-export type InsertUser = InferModel<typeof users, 'insert'>

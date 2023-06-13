@@ -4,8 +4,8 @@
 
 <template>
   <div class="carousel-slide">
-    <img class="carousel-image" src="static/images/model1.jpg" alt="">
-    <div class="slide-details">
+    <img class="carousel-image" src="/static/images/model1.jpg" alt="">
+    <div class="carousel__slide-details">
       <div class="card">
         <div class="card-header">Card Header</div>
         <div class="card-body">

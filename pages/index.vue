@@ -2,6 +2,7 @@
 </script>
 
 <template>
+  <Title>Home</Title>
   <Landing/>
   <Shop/>
   <Contact/>
