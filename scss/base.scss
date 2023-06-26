@@ -2,7 +2,7 @@
     font-family: 'Mulish', sans-serif;
     --font-family-secondary: 'Anek Telugu', sans-serif;
     --font-family-tertiary: 'Edu VIC WA NT Beginner', cursive;
-    /* Pallate */
+    /* Palate */
     --coolor_one: #001219;
     --cooler_two: #005F73;
     --cooler_three: #0A9396;
@@ -18,25 +18,4 @@
     --cooler-white: #f5f5f5;
     --accent: #df208f;
     --primary: hsl(220, 10%, 10%);
-}
-
-ul {
-    list-style: none;
-    text-decoration: none;
-}
-
-a {
-    text-decoration: none;
-    color: inherit;
-}
-
-body {
-    overflow-x: hidden;
-    position: relative;
-}
-
-
-// For carousel initialisation added in page script
-.transitionSpeed {
-    transition: transform 0.5s ease-in-out;
 }

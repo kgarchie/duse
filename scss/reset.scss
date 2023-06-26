@@ -5,3 +5,34 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+::-webkit-scrollbar-track {
+  background-color: var(--primary);
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color:var(--cooler-eleven);
+}
+
+ul {
+  list-style: none;
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+body {
+  overflow-x: hidden;
+  position: relative;
+}

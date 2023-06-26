@@ -6,7 +6,6 @@
   <Landing/>
   <Shop/>
   <Contact/>
-  <Footer/>
 </template>
 
 <style scoped>

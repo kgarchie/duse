@@ -22,7 +22,12 @@
     "sass": "^1.63.3"
   },
   "dependencies": {
+    "@types/nodemailer": "^6.4.8",
+    "@types/uuid": "^9.0.2",
     "drizzle-orm": "^0.26.5",
-    "mysql2": "^3.3.4"
+    "mysql2": "^3.3.4",
+    "nodemailer": "^6.9.3",
+    "ulid": "^2.3.0",
+    "uuid": "^9.0.0"
   }
 }
