@@ -1,4 +1,4 @@
-import {LoginCredentials, RegisterCredentials} from "~/types";
+import {LoginCredentials, UpdatePasswordRequest, RegisterCredentials} from "~/types";
 import {z} from "zod";
 import {H3Event} from "h3";
 import * as crypto from "crypto";
@@ -46,6 +46,27 @@ export function cleanRegisterCredentials(data: RegisterCredentials): RegisterCre
         return data
     } catch (e) {
         console.log(e)
+        return null
+    }
+}
+
+export function cleanUpdatePasswordRequest(request: UpdatePasswordRequest): UpdatePasswordRequest | null {
+    if (!request || !request.email || !request.token) return null
+
+    request.email = request.email.trim().toLowerCase()
+    request.token = request.token.trim()
+    request.password = request.password?.trim()
+
+    const schema = z.object({
+        email: z.string().email(),
+        token: z.string(),
+        password: z.string().min(8)
+    })
+
+    try {
+        schema.parse(request)
+        return request
+    } catch (e) {
         return null
     }
 }

@@ -1,0 +1,56 @@
+.transitionSpeed {
+  transition: transform 0.5s ease-in-out;
+}
+
+.pop-up-carousel {
+  margin: 0 auto;
+
+  .carousel__button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    background-color: var(--cooler-white);
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    z-index: 5;
+    opacity: 0.5;
+
+    backdrop-filter: blur(10px);
+  }
+
+  .carousel__button > img {
+    opacity: 0.5;
+  }
+
+  .carousel__button:is(:hover, :focus) > img {
+    opacity: 1;
+  }
+
+  .carousel__button--left {
+    left: 10px;
+    transform: rotate(180deg) translateY(50%);
+  }
+
+  .carousel__button--right {
+    right: 10px;
+  }
+
+  .carousel__track-container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
+    .carousel-track {
+      position: absolute;
+      width: fit-content;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+  }
+}

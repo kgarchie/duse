@@ -1,5 +1,5 @@
 import {H3Event, defineEventHandler} from "h3";
-import {login, register, identity, logout, updatePassword} from "~/mvc/auth/methods";
+import {login, register, identity, logout, updatePassword, requestReset} from "~/mvc/auth/methods";
 
 const router = createRouter();
 
@@ -19,8 +19,12 @@ router.get('/logout', defineEventHandler(async (event: H3Event) => {
     return await logout(event)
 }));
 
-router.post('/reset', defineEventHandler(async (event: H3Event) => {
+router.post('/updatePassword', defineEventHandler(async (event: H3Event) => {
     return await updatePassword(event)
+}));
+
+router.post('/resetPassword', defineEventHandler(async (event: H3Event) => {
+    return await requestReset(event)
 }));
 
 export default useBase('/api/auth', router.handler)

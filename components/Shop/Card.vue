@@ -29,10 +29,16 @@
 
       <div class="shop-card-buttons">
         <div class="shop-card-icon">
-          <img src="/static/svgs/light-cart.svg" alt="">
+          <Transition mode="out-in">
+            <img src="/static/svgs/light-cart.svg" alt="" v-if="!carted" @click="cart">
+            <img src="/static/svgs/cart.svg" alt="" v-else>
+          </Transition>
         </div>
         <div class="shop-card-icon">
-          <img src="/static/svgs/light-heart.svg" alt="">
+          <Transition mode="out-in">
+            <img src="/static/svgs/light-heart.svg" alt="" v-if="!liked" @click="like">
+            <img src="/static/svgs/heart.svg" alt="" v-else>
+          </Transition>
         </div>
       </div>
     </div>
@@ -173,6 +179,10 @@
           width: 30px;
           height: 30px;
         }
+
+        > * {
+          cursor: pointer;
+        }
       }
     }
   }
@@ -182,6 +192,8 @@
 let images: Element | null = null
 let scrollPosition = 0
 let imageSize = 0
+const liked = ref(false);
+const carted = ref(false);
 const context = getCurrentInstance()
 
 function getClosestImage() {
@@ -229,5 +241,21 @@ function scrollRight() {
     left: closestImage + imageSize,
     behavior: 'smooth'
   })
+}
+
+function like() {
+  liked.value = true
+}
+
+function cart() {
+  carted.value = true
+}
+
+function unlike() {
+  liked.value = false
+}
+
+function uncart() {
+  carted.value = false
 }
 </script>

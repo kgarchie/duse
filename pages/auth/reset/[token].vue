@@ -1,70 +1,6 @@
-<script setup lang="ts">
-import {APIResponse, UserCookie, UserState} from "~/types";
-const bearer = useCookie<UserCookie>('bearer')
-
-const user = useUser()
-const password1 = ref('');
-const password2 = ref('');
-const email = ref('');
-const phone = ref('');
-const name = ref('');
-
-async function submit() {
-  if (password2.value === '' || email.value === '') {
-    alert('Please fill in all fields');
-    return;
-  }
-
-  const data = {
-    email: email.value,
-    password: password2.value,
-    phone: phone.value,
-    name: name.value,
-    user_id: user.value?.user_id || ''
-  }
-
-  const {data: res} = await useFetch('/api/auth/register', {
-    method: 'POST',
-    headers:{
-      bearer: user?.value?.token || ''
-    },
-    body: data
-  })
-
-  const response = res.value as APIResponse
-
-  if(response.statusCode === 200) {
-    const userState = response.body as UserState
-
-    user.value = userState
-    bearer.value = {bearer: userState.token}
-    await navigateTo('/')
-  } else {
-    alert(response.body)
-    window.location.reload()
-  }
-}
-
-
-watch([password1, password2], () => {
-  if (password2.value && password1.value !== password2.value) {
-    document.querySelector('.warning')?.classList.add('show')
-  } else {
-    document.querySelector('.warning')?.classList.remove('show')
-  }
-})
-</script>
-
 <template>
+  <Title>Reset Password</Title>
   <form>
-    <div class="form-input">
-      <label for="name">Username(Optional)</label>
-      <input type="name" id="name" placeholder="👤" v-model="name"/>
-    </div>
-    <div class="form-input">
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="@" v-model="email"/>
-    </div>
     <div class="form-input">
       <label for="password">Password</label>
       <input type="password" id="password1" placeholder="🤐" v-model="password1"/>
@@ -74,20 +10,62 @@ watch([password1, password2], () => {
       <input type="password" id="password2" placeholder="🙄" v-model="password2"/>
       <small class="help warning">Passwords do not match</small>
     </div>
-    <div class="form-input" style="margin-top: -10px">
-      <label for="phone">Phone Number(Optional)</label>
-      <input type="tel" id="phone" placeholder="🤙" v-model="phone"/>
-    </div>
     <div class="form-buttons">
       <button type="button" @click="submit">Sign Up</button>
     </div>
-    <small>Already have an account?
-      <NuxtLink to="/auth/login">Login</NuxtLink>
-    </small>
   </form>
 </template>
+<script setup lang="ts">
+import {APIResponse, UserCookie, UserState} from '~/types';
 
-<style scoped lang="scss">
+const bearer = useCookie<UserCookie>('bearer')
+
+const password1 = ref('');
+const password2 = ref('');
+const route = useRoute()
+
+const parameters = route.params.token
+const [email, token] = parameters.toString().split('&')
+
+async function submit() {
+  if (password2.value === '' || password1.value === '') {
+    alert('Please fill in all fields');
+    return;
+  }
+
+  const data = {
+    password: password2.value,
+    token: token,
+    email: email
+  }
+
+  const {data: res} = await useFetch('/api/auth/reset', {
+    method: 'POST',
+    body: data
+  })
+
+  const response = res.value as APIResponse
+
+  if (response.statusCode === 200) {
+    const userState = response.body as UserState
+
+    if (userState.token) bearer.value = {bearer: userState.token}
+    window.location.href = '/'
+  } else {
+    alert(response.body)
+    window.location.reload()
+  }
+}
+
+watch([password1, password2], () => {
+  if (password2.value && password1.value !== password2.value) {
+    document.querySelector('.warning')?.classList.add('show')
+  } else {
+    document.querySelector('.warning')?.classList.remove('show')
+  }
+})
+</script>
+<style lang="scss" scoped>
 form {
   height: 400px;
   width: 500px;
@@ -134,12 +112,12 @@ form {
       align-self: flex-end;
     }
 
-    .warning{
+    .warning {
       color: red;
       font-size: 0.8rem;
       opacity: 0;
 
-      &.show{
+      &.show {
         opacity: 1;
       }
     }

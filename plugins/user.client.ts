@@ -20,15 +20,14 @@ export default defineNuxtPlugin(async () => {
             const userState = response.body as UserState
 
             user.value = userState
-            bearer.value = {bearer: userState.bearer}
+            if (userState.token) bearer.value = {bearer: userState.token}
 
             // console.log(response)
         } else {
-            alert('User Session Expired | Please login again')
-            bearer.value.bearer = ''
+            bearer.value = {bearer: ''}
             user.value = null
 
-            location.href = '/auth/login'
+            // alert logged out
         }
 
         // console.log(bearer.value)

@@ -1,7 +1,12 @@
-import {LoginCredentials, RegisterCredentials, RegistrationError, UserState} from "~/types";
+import {
+    LoginCredentials,
+    UpdatePasswordRequest,
+    RegisterCredentials,
+    TokenType,
+    UserState, PasswordResetRequest
+} from "~/types";
 import db from "~/db/db";
-import {H3Event} from "h3";
-import {hashPassword, readBearerToken, verifyPassword} from "~/mvc/auth/helpers";
+import {hashPassword, verifyPassword} from "~/mvc/auth/helpers";
 import {v4 as uuidv4} from "uuid";
 import {User, users} from "~/db/schema/user";
 import {tokens} from "~/db/schema/token";
@@ -26,9 +31,9 @@ export async function loginUser(data: LoginCredentials, bearer: string | null = 
     const user = result[0]
     if (!verifyPassword(data.password, user.password)) return null
 
-    if (bearer) revokeToken(bearer)
+    if (bearer) revokeToken(bearer, TokenType.BEARER)
 
-    const newToken = await generateNewBearerToken(user.user_id)
+    const newToken = await generateNewToken(user.user_id, TokenType.BEARER)
         .catch((e) => {
             throw e as Error
         })
@@ -38,17 +43,18 @@ export async function loginUser(data: LoginCredentials, bearer: string | null = 
     userState.name = user.name!
     userState.email = user.email!
     userState.is_admin = user.isAdmin!
-    userState.bearer = newToken
+    userState.token = newToken
 
     return userState
 }
 
-async function generateNewBearerToken(user_id: string): Promise<string> {
+async function generateNewToken(user_id: string, type: string): Promise<string> {
     const token = uuidv4()
 
     await db.insert(tokens).values({
         token: token,
-        user_id: user_id
+        user_id: user_id,
+        type: type
     }).catch((e) => {
         throw e
     })
@@ -56,22 +62,15 @@ async function generateNewBearerToken(user_id: string): Promise<string> {
     return token
 }
 
-export async function registerUser(data: RegisterCredentials): Promise<UserState | Error> {
-    async function getOrCreateUser() {
-        let _user = await getUserByUserId(data.user_id)
-        if (!_user?.isEphemeral) throw new Error("User already exists")
+export async function registerUser(data: RegisterCredentials): Promise<UserState | null> {
+    let _user = await getUserByUserId(data.user_id)
+    if (!_user?.isEphemeral) throw new Error("User already exists")
 
-        if (!_user) _user = await createEphemeralUser()
+    if (!_user) _user = await createEphemeralUser()
 
-        return _user
-    }
+    const user = _user
 
-    const user = await getOrCreateUser()
-        .catch((e) => {
-            throw e as Error
-        })
-
-    if (!user) return new Error("User not found")
+    if (!user) throw new Error("User not found")
 
     await db.update(users).set({
         isEphemeral: false,
@@ -83,10 +82,10 @@ export async function registerUser(data: RegisterCredentials): Promise<UserState
             throw e as Error
         })
 
-    return await getUserByUserId(user.user_id).catch(
-        (e) => {
-            throw e
-        }) as UserState
+    return await loginUser({
+        email: data.email,
+        password: data.password
+    }, null)
 }
 
 async function getUserByUserId(user_id: string): Promise<User & UserState | null> {
@@ -130,7 +129,8 @@ async function createEphemeralUser(): Promise<User & UserState | null> {
 
     await db.insert(tokens).values({
         token: bearer,
-        user_id: user_id
+        user_id: user_id,
+        type: TokenType.BEARER
     }).catch(
         (e) => {
             throw e as Error
@@ -149,7 +149,7 @@ async function createEphemeralUser(): Promise<User & UserState | null> {
         .limit(1)
         .catch(
             (e) => {
-                throw e
+                throw e as Error
             })
 
     if (!result) return null
@@ -157,14 +157,14 @@ async function createEphemeralUser(): Promise<User & UserState | null> {
     user.user_id = result[0].user_id
     user.name = result[0].name!
     user.email = result[0].email!
-    user.bearer = bearer
+    user.token = bearer
     user.is_admin = result[0].isAdmin!
     user.isEphemeral = result[0].isEphemeral!
 
     return user
 }
 
-async function getUserFromBearerToken(bearer: string): Promise<UserState | null> {
+async function getUserFromToken(token: string, type: string): Promise<UserState | null> {
     let userState = {} as UserState
     const result = await db.select({
         user_id: users.user_id,
@@ -173,7 +173,7 @@ async function getUserFromBearerToken(bearer: string): Promise<UserState | null>
         isAdmin: users.isAdmin
     }).from(users)
         .innerJoin(tokens, eq(tokens.user_id, users.user_id))
-        .where(and(eq(tokens.isValid, true), eq(tokens.token, bearer)))
+        .where(and(eq(tokens.isValid, true), eq(tokens.token, token), eq(tokens.type, type)))
 
     if (!result || result.length === 0) return null
 
@@ -181,28 +181,26 @@ async function getUserFromBearerToken(bearer: string): Promise<UserState | null>
     userState.name = result[0].name!
     userState.email = result[0].email!
     userState.is_admin = result[0].isAdmin!
-    userState.bearer = bearer
+    userState.token = token
 
     return userState
 }
 
-export async function identifyUser(event: H3Event): Promise<UserState | null> {
-    let bearer = readBearerToken(event)
+export async function identifyUser(bearer: string | null): Promise<UserState | null> {
     if (Array.isArray(bearer)) throw new Error("Invalid headers | More than one bearer token")
     if (!bearer) return await createEphemeralUser()
 
-    return await getUserFromBearerToken(bearer)
+    return await getUserFromToken(bearer, TokenType.BEARER)
 }
 
 
-export async function logoutUser(event: H3Event): Promise<boolean> {
-    let bearer = readBearerToken(event)
+export async function logoutUser(bearer: string | null): Promise<boolean> {
     if (Array.isArray(bearer)) return false
     if (!bearer) return false
 
-    await db.update(tokens).set({
+    db.update(tokens).set({
         isValid: false
-    }).where(eq(tokens.token, bearer))
+    }).where(and(eq(tokens.token, bearer), eq(tokens.type, TokenType.BEARER)))
         .catch((e) => {
             throw e as Error
         })
@@ -210,10 +208,10 @@ export async function logoutUser(event: H3Event): Promise<boolean> {
     return true
 }
 
-async function resetUserTokens(user_id: string): Promise<boolean> {
+async function resetUserTokens(user_id: string, type: string): Promise<boolean> {
     await db.update(tokens).set({
         isValid: false
-    }).where(eq(tokens.user_id, user_id))
+    }).where(and(eq(tokens.user_id, user_id), eq(tokens.type, type)))
         .catch((e) => {
             throw e
         })
@@ -230,10 +228,10 @@ export async function getUserByEmail(email: string): Promise<UserState | null> {
     }).from(users).where(eq(users.email, email))
         .limit(1)
         .catch((e) => {
-            throw e
+            throw e as Error
         })
 
-    if (!result) return null
+    if (!result || result.length == 0) return null
 
     let userState = {} as UserState
     userState.user_id = result[0].user_id
@@ -244,23 +242,25 @@ export async function getUserByEmail(email: string): Promise<UserState | null> {
     return userState
 }
 
-async function checkTokenValidity(token: string, user_id: string): Promise<boolean> {
+async function getValidatedUserByEmail(email: string, token: string, tokenType: string) {
     const result = await db.select({
-        isValid: tokens.isValid
-    }).from(tokens).where(and(eq(tokens.token, token), eq(tokens.user_id, user_id)))
-        .limit(1)
-        .catch((e) => {
-            throw e
-        })
+        user_id: users.user_id,
+        name: users.name,
+        email: users.email,
+        isAdmin: users.isAdmin
+    }).from(users)
+        .innerJoin(tokens, eq(tokens.user_id, users.user_id))
+        .where(and(eq(tokens.isValid, true), eq(tokens.token, token), eq(tokens.type, tokenType), eq(users.email, email)))
 
-    if (!result) return false
+    if (!result || result.length === 0) throw new Error("Invalid token | User not found")
 
-    return result[0].isValid || false
+    return result[0] || null
 }
 
-async function revokeToken(token: string) {
+async function revokeToken(token: string, type: string) {
     await db.update(tokens).set({
-        isValid: false
+        isValid: false,
+        type: type
     }).where(eq(tokens.token, token))
         .catch((e) => {
             throw e
@@ -269,23 +269,11 @@ async function revokeToken(token: string) {
     return true
 }
 
-export async function updateUserPassword(event: H3Event): Promise<UserState | null> {
-    const data = await readBody(event)
-    if (!data) throw new Error("Invalid body")
-
-    const user = await getUserByEmail(data.email)
+export async function updateUserPassword(data: UpdatePasswordRequest): Promise<UserState | null> {
+    const user = await getValidatedUserByEmail(data.email, data.token, TokenType.PASSWORD_RESET)
         .catch((e) => {
             throw e as Error
         })
-    if (!user) throw new Error("User not found")
-
-    const isValidResetToken = await checkTokenValidity(data.token, user.user_id)
-        .catch((e) => {
-            throw e as Error
-        })
-    if (!isValidResetToken) throw new Error("Invalid reset token")
-
-    revokeToken(data.token)
 
     const result = await db.update(users)
         .set({
@@ -297,12 +285,13 @@ export async function updateUserPassword(event: H3Event): Promise<UserState | nu
 
     if (!result) throw new Error("Failed to update user")
 
-    await resetUserTokens(user.user_id).catch((e) => {
-        throw e as Error
-    })
+    await resetUserTokens(user.user_id, TokenType.PASSWORD_RESET)
+        .catch((e) => {
+            throw e as Error
+        })
 
     let loginCredentials = {} as LoginCredentials
-    loginCredentials.email = user.email
+    loginCredentials.email = user.email!
     loginCredentials.password = data.password
 
     return await loginUser(loginCredentials).catch((e) => {
@@ -310,21 +299,20 @@ export async function updateUserPassword(event: H3Event): Promise<UserState | nu
     })
 }
 
-export async function requestPasswordReset(event: H3Event): Promise<boolean> {
-    const {email, origin} = await readBody(event)
-    const user = await getUserByEmail(email)
+export async function requestPasswordReset(data: PasswordResetRequest): Promise<boolean> {
+    const user = await getUserByEmail(data.email)
         .catch((e) => {
             throw e as Error
         })
 
     if (!user) throw new Error("User not found")
 
-    const token = await generateNewBearerToken(user.user_id)
+    const token = await generateNewToken(user.user_id, TokenType.PASSWORD_RESET)
         .catch((e) => {
             throw new Error("Failed to generate token")
         })
 
-    await mailResetPasswordLink(email, origin, token)
+    await mailResetPasswordLink(data.email, token, origin, data.path)
         .catch((e) => {
             throw e as Error
         })

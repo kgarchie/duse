@@ -22,7 +22,7 @@ async function submit() {
   const {data: res} = await useFetch('/api/auth/login', {
     method: 'POST',
     headers: {
-      bearer: user?.value?.bearer || ''
+      bearer: user?.value?.token || ''
     },
     body: data
   })
@@ -33,7 +33,7 @@ async function submit() {
     const userState = response.body as UserState
 
     user.value = userState
-    bearer.value = {bearer: userState.bearer}
+    bearer.value = {bearer: userState.token}
 
     await navigateTo('/')
   } else {
@@ -52,7 +52,7 @@ async function submit() {
       <label for="password">Password</label>
       <input type="password" id="password" placeholder="¯\_(ツ)_/¯" v-model="password"/>
       <small>Forgot password?
-        <NuxtLink to="/auth/register">Reset</NuxtLink>
+        <NuxtLink to="/auth/reset">Reset</NuxtLink>
       </small>
     </div>
     <div class="form-buttons">

@@ -27,11 +27,29 @@ export type UserState = {
     email: string;
     name: string;
     is_admin: boolean;
-    bearer: string;
+    token: string;
 }
 
 export type UserCookie = {
     bearer: string;
+}
+
+export type UpdatePasswordRequest = {
+    token: string;
+    email: string;
+    password: string;
+}
+
+export type PasswordResetRequest = {
+    email: string;
+    origin: string;
+    path: string;
+}
+
+export const TokenType = {
+    EMAIL_VERIFICATION: 'email_verification',
+    PASSWORD_RESET: 'password_reset',
+    BEARER: 'bearer'
 }
 
 export function PASSWORD_RESET_TEMPLATE(link: any) {

@@ -1,0 +1,1 @@
+ALTER TABLE `tokens` ADD `type` enum('email_verification','password_reset','bearer') NOT NULL;

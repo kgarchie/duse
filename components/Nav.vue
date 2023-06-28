@@ -13,14 +13,15 @@
     <div class="menu inactive">
       <div class="icons-container">
         <div class="icons">
+          <NuxtLink class="heart"><img src="/static/svgs/clear-heart.svg" alt=""></NuxtLink>
+          <NuxtLink class="cart" to="/shop/cart"><img src="/static/svgs/cart.svg" alt=""></NuxtLink>
           <ClientOnly>
             <Transition name="login_buttons" mode="out-in">
-              <a class="logout" v-if="user?.email" @click.prevent="logout"><img src="/static/svgs/logout.svg" alt=""></a>
+              <a class="logout" v-if="user?.email" @click.prevent="logout"><img src="/static/svgs/logout.svg"
+                                                                                alt=""></a>
               <NuxtLink class="login" to="/auth/login" v-else><img src="/static/svgs/login.svg" alt=""></NuxtLink>
             </Transition>
           </ClientOnly>
-          <NuxtLink class="heart"><img src="/static/svgs/clear-heart.svg" alt=""></NuxtLink>
-          <NuxtLink class="cart"><img src="/static/svgs/cart.svg" alt=""></NuxtLink>
         </div>
         <div class="ham">
           <div class="line"></div>
@@ -64,14 +65,14 @@ $transition-speed: 0.4s;
 
   background-color: var(--primary);
 
-  >.start {
+  > .start {
     img {
       width: 50px;
       height: 50px;
     }
   }
 
-  >.center {
+  > .center {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -132,6 +133,16 @@ $transition-speed: 0.4s;
           img {
             width: 30px;
             height: 30px;
+          }
+        }
+
+        .heart,
+        .cart {
+          transition: scale 0.2s ease;
+
+          &:hover {
+            cursor: pointer;
+            scale: 1.1;
           }
         }
       }
@@ -323,18 +334,18 @@ $transition-speed: 0.4s;
   animation: bounce 0.2s ease-in-out reverse;
 }
 
-.logout{
+.logout {
   scale: 0.9;
   transition: scale 0.2ms ease;
 
-  &:hover{
+  &:hover {
     scale: 1;
     cursor: pointer;
   }
 }
 
-.login{
-  &:hover{
+.login {
+  &:hover {
     cursor: pointer;
   }
 }
@@ -343,10 +354,10 @@ $transition-speed: 0.4s;
 const user = useUser();
 
 async function logout() {
-  const { data: res } = await useFetch('/api/auth/logout', {
+  const {data: res} = await useFetch('/api/auth/logout', {
     method: 'GET',
     headers: {
-      'bearer': user?.value?.bearer
+      'bearer': user?.value?.token
     }
   })
 

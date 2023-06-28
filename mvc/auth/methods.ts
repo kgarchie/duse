@@ -1,5 +1,5 @@
 import {H3Event} from "h3";
-import {APIResponse, LoginCredentials, RegisterCredentials, UserState} from "~/types";
+import {APIResponse, LoginCredentials, PasswordResetRequest, RegisterCredentials, UserState} from "~/types";
 import {
     loginUser,
     registerUser,
@@ -8,7 +8,12 @@ import {
     updateUserPassword,
     requestPasswordReset
 } from "~/mvc/auth/queries";
-import {cleanLoginCredentials, cleanRegisterCredentials, readBearerToken} from "~/mvc/auth/helpers";
+import {
+    cleanLoginCredentials,
+    cleanUpdatePasswordRequest,
+    cleanRegisterCredentials,
+    readBearerToken
+} from "~/mvc/auth/helpers";
 
 
 export async function login(event: H3Event): Promise<APIResponse> {
@@ -48,14 +53,14 @@ export async function register(event: H3Event): Promise<APIResponse> {
         return response
     }
 
-    const result: UserState | Error = await registerUser(cleanedRegisterData)
+    const result: UserState | Error | null = await registerUser(cleanedRegisterData)
         .catch((e) => {
             return e as Error
         })
 
-    if (result instanceof Error) {
-        response.statusCode = 400
-        response.body = result.message
+    if (!result || result instanceof Error) {
+        response.statusCode = 500
+        response.body = result?.message || "Internal server error"
         return response
     }
 
@@ -67,8 +72,8 @@ export async function register(event: H3Event): Promise<APIResponse> {
 
 export async function identity(event: H3Event): Promise<APIResponse> {
     let response = {} as APIResponse
-
-    const result: UserState | Error | null = await identifyUser(event)
+    const bearer = readBearerToken(event)
+    const result: UserState | Error | null = await identifyUser(bearer)
         .catch((e) => {
             return e as Error
         })
@@ -93,7 +98,8 @@ export async function identity(event: H3Event): Promise<APIResponse> {
 
 export async function logout(event: H3Event): Promise<APIResponse> {
     let response = {} as APIResponse
-    const result = await logoutUser(event)
+    const bearer = readBearerToken(event)
+    const result = await logoutUser(bearer)
         .catch((e) => {
             console.error(e)
             response.statusCode = 500
@@ -113,28 +119,34 @@ export async function logout(event: H3Event): Promise<APIResponse> {
 }
 
 export async function updatePassword(event: H3Event): Promise<APIResponse> {
+    let data = await readBody(event)
     let response = {} as APIResponse
-    const result = await updateUserPassword(event)
-        .catch((e) => {
-            response.statusCode = 500
-            response.body = `Internal server error | ${e.message}`
-            return response
-        })
 
-    if (!result) {
-        response.statusCode = 404
-        response.body = "User Not found"
+    data = cleanUpdatePasswordRequest(data)
+    if (!data) {
+        response.statusCode = 400
+        response.body = "Invalid request"
+        return response
+    }
+
+    const result = await updateUserPassword(data)
+        .catch((e) => e as Error)
+
+    if (result instanceof Error) {
+        response.statusCode = 500
+        response.body = result.message
         return response
     }
 
     response.statusCode = 200
-    response.body = "Reset"
+    response.body = result
     return response
 }
 
 export async function requestReset(event: H3Event): Promise<APIResponse> {
     let response = {} as APIResponse
-    const result = await requestPasswordReset(event)
+    const data = await readBody(event) as PasswordResetRequest
+    const result = await requestPasswordReset(data)
         .catch((e) => {
             return e as Error
         })

@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"nuxt dev\" \"sass --watch scss/main.scss:assets/css/style.css\"",
+    "dev": "concurrently \"nuxt dev\" \"sass --watch scss/main.scss:assets/css/style.css scss/components/carousel.scss:assets/css/carousel.css\"",
     "build": "sass scss/main.scss:assets/css/style.css && nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -27,6 +27,7 @@
     "drizzle-orm": "^0.26.5",
     "mysql2": "^3.3.4",
     "nodemailer": "^6.9.3",
+    "nuxt-storage": "^1.2.2",
     "ulid": "^2.3.0",
     "uuid": "^9.0.0"
   }

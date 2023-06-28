@@ -1,5 +1,12 @@
 <script setup lang="ts">
-
+const props = defineProps({
+  item: {
+    type: Object as PropType<{
+      imageUrl: string,
+      caption: string,
+    }>
+  }
+})
 </script>
 
 <template>
