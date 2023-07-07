@@ -1,15 +1,24 @@
 <script setup lang="ts">
 import {integer} from "vscode-languageserver-types";
+import {PropType} from "vue";
 
-const liked = ref(false)
-const quantity = ref(1)
+const liked = ref(false);
 
 const props = defineProps({
   item: {
-    type: Object,
+    type: Object as PropType<{
+      name: string,
+      description: string,
+      tag: string,
+      price: number,
+      quantity: number,
+      image: string,
+    }>,
     required: true
   }
 })
+
+const quantity = ref(props.item?.quantity)
 
 const emit = defineEmits(['delete', 'setQuantity'])
 
@@ -31,7 +40,8 @@ function editQuantity(e: integer) {
 <template>
   <div class="item">
     <div class="buttons">
-      <span class="delete-btn" @click="deleteItem"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="96px" height="96px">
+      <span class="delete-btn" @click="deleteItem"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
+                                                        width="96px" height="96px">
     <path fill="#df208f" class="primary"
           d="M42,37c0,2.762-2.238,5-5,5H11c-2.762,0-5-2.238-5-5V11c0-2.762,2.238-5,5-5h26c2.762,0,5,2.238,5,5V37z"/>
     <path fill="#FFEBEE" class="secondary" d="M21.914 12.065H25.914V36.107H21.914z"
@@ -47,9 +57,9 @@ function editQuantity(e: integer) {
     </div>
 
     <div class="description">
-      <span>Common Projects</span>
-      <span>Bball High</span>
-      <span>White</span>
+      <span>{{ item.name }}</span>
+      <span>{{ item.description }}</span>
+      <span>{{ item.tag }}</span>
     </div>
 
     <div class="quantity">
@@ -65,7 +75,8 @@ function editQuantity(e: integer) {
     <div class="total-price"><span class="price">$549</span></div>
     <div class="buttons">
       <Transition name="like_buttons" mode="out-in">
-        <span class="like-btn" v-if="!liked"><img src="/static/svgs/clear-heart.svg" alt="💗" @click="liked = !liked"></span>
+        <span class="like-btn" v-if="!liked"><img src="/static/svgs/clear-heart.svg" alt="💗"
+                                                  @click="liked = !liked"></span>
         <span class="like-btn" v-else><img src="/static/svgs/heart.svg" alt="❤️" @click="liked = !liked"></span>
       </Transition>
     </div>
@@ -139,7 +150,7 @@ function editQuantity(e: integer) {
       }
     }
 
-    .like-btn img{
+    .like-btn img {
       transform: scale(0.9);
       transition: transform 0.2s ease-in-out;
 
@@ -279,7 +290,7 @@ input:focus {
   .description {
     width: 100%;
 
-    .price{
+    .price {
       font-size: 1.1em;
     }
   }
@@ -299,7 +310,7 @@ input:focus {
     }
   }
 
-  .quantity{
+  .quantity {
     top: 0.065rem;
     right: 0;
     margin-right: 0.45rem;

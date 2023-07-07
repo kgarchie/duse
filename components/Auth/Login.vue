@@ -29,7 +29,7 @@ async function submit() {
 
   const response = res.value as APIResponse
 
-  if (response.statusCode === 200) {
+  if (response && response.statusCode === 200) {
     const userState = response.body as UserState
 
     user.value = userState
@@ -37,7 +37,7 @@ async function submit() {
 
     await navigateTo('/')
   } else {
-    alert(response.body)
+    alert("Error: " + response?.body?.toString())
   }
 }
 </script>
@@ -68,8 +68,8 @@ async function submit() {
 form {
   height: 400px;
   width: 500px;
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 90vw;
+  max-height: 90vh;
   margin: auto;
 
   small {

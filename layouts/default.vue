@@ -16,4 +16,8 @@
   min-height: 100vh;
   min-height: 100dvh;
 }
+
+main{
+  transition: height 0.5s ease-in-out;
+}
 </style>

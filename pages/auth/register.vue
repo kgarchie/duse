@@ -11,7 +11,7 @@
 
 <style scoped>
 .main{
-  margin-top: 3rem;
+  margin-top: 5rem;
   margin-bottom: 3rem;
 }
 </style>

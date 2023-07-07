@@ -45,7 +45,7 @@ const items = ref<any>([
 items.value.forEach((item: any, index: number) => {
   item.id = index
 })
-const lastKey = items.value.length
+
 function deleteItem(item: any) {
   const index = items.value.indexOf(item)
   if (index > -1) items.value.splice(index, 1)
@@ -53,7 +53,6 @@ function deleteItem(item: any) {
 
 function setQuantity(item: any, quantity: number) {
   item.quantity = quantity
-  console.log(item)
 }
 </script>
 
@@ -69,10 +68,10 @@ function setQuantity(item: any, quantity: number) {
       <TransitionGroup name="item_list">
         <ShopCartItem v-for="item in items" :key="item.id" :item="item" @delete="deleteItem(item)"
                       @setQuantity="setQuantity(item, $event)"/>
-        <div class="checkout-button" :key="lastKey">
-          <button>Checkout</button>
-        </div>
       </TransitionGroup>
+    </div>
+    <div class="checkout-button">
+      <button>Checkout</button>
     </div>
   </div>
 </template>
@@ -133,37 +132,32 @@ function setQuantity(item: any, quantity: number) {
     .item_list-leave-active {
       position: absolute;
     }
-
-    .checkout-button {
-      border-top: 2px solid #E1E8EE;
-      display: flex;
-      justify-content: flex-end;
-      padding: 1.5em 1.5em 1.5em 0;
-
-      transition: all 0.2s ease-in-out;
-
-      button {
-        width: 8em;
-        height: 2.5em;
-        background: var(--primary);
-        border: none;
-        border-radius: 0.25em;
-        color: var(--cooler-white);
-        font-size: 1.1em;
-        font-weight: 400;
-        transition: background 0.2s ease-in-out;
-
-        &:hover {
-          cursor: pointer;
-          background: var(--primary-hover);
-          transition: background 0.2s ease-in-out;
-        }
-      }
   }
 
-    @media screen and (max-width: 768px) {
-      padding: 1.5em 1.5em 1.5em 0;
-      justify-content: center;
+  .checkout-button {
+    border-top: 2px solid #E1E8EE;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1.5em 1.5em 1.5em 0;
+
+    transition: all 0.2s ease-in-out;
+
+    button {
+      width: 8em;
+      height: 2.5em;
+      background: var(--primary);
+      border: none;
+      border-radius: 0.25em;
+      color: var(--cooler-white);
+      font-size: 1.1em;
+      font-weight: 400;
+      transition: background 0.1s ease-in-out;
+
+      &:hover {
+        cursor: pointer;
+        background: var(--accent);
+        transition: background 0.1s ease-in-out;
+      }
     }
   }
 }

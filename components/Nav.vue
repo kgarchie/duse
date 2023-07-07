@@ -10,45 +10,73 @@
         <input type="text" placeholder="Search">
       </span>
     </div>
-    <div class="menu inactive">
+    <div class="menu inactive" ref="menu">
       <div class="icons-container">
         <div class="icons">
-          <NuxtLink class="heart"><img src="/static/svgs/clear-heart.svg" alt=""></NuxtLink>
-          <NuxtLink class="cart" to="/shop/cart"><img src="/static/svgs/cart.svg" alt=""></NuxtLink>
+          <NuxtLink class="heart" to="/shop/liked" @click="toggleHam"><img src="/static/svgs/clear-heart.svg" alt=""></NuxtLink>
+          <NuxtLink class="cart" to="/shop/cart" @click="toggleHam"><img src="/static/svgs/cart.svg" alt=""></NuxtLink>
           <ClientOnly>
             <Transition name="login_buttons" mode="out-in">
-              <a class="logout" v-if="user?.email" @click.prevent="logout"><img src="/static/svgs/logout.svg"
+              <a class="logout" v-if="user?.email" @click.prevent="logout" @click="toggleHam"><img src="/static/svgs/logout.svg"
                                                                                 alt=""></a>
-              <NuxtLink class="login" to="/auth/login" v-else><img src="/static/svgs/login.svg" alt=""></NuxtLink>
+              <NuxtLink class="login" to="/auth/login" @click="toggleHam" v-else><img src="/static/svgs/login.svg" alt=""></NuxtLink>
             </Transition>
           </ClientOnly>
         </div>
-        <div class="ham">
+        <div class="ham" @click="toggleHam" ref="ham">
           <div class="line"></div>
           <div class="line"></div>
           <div class="line"></div>
         </div>
       </div>
-      <!--      <div class="nav-link-container">-->
-      <!--        <ul class="nav-links">-->
-      <!--          <li class="navlink">-->
-      <!--            <NuxtLink href="">New</NuxtLink>-->
-      <!--          </li>-->
-      <!--          <li class="navlink">-->
-      <!--            <NuxtLink href="">Gallery</NuxtLink>-->
-      <!--          </li>-->
-      <!--          <li class="navlink">-->
-      <!--            <NuxtLink href="">Jewellery</NuxtLink>-->
-      <!--          </li>-->
-      <!--          <li class="navlink">-->
-      <!--            <NuxtLink href="">Collections</NuxtLink>-->
-      <!--          </li>-->
-      <!--        </ul>-->
-      <!--      </div>-->
+      <div class="nav-link-container">
+        <ul class="nav-links">
+          <li class="navlink">
+            <NuxtLink href="">New</NuxtLink>
+          </li>
+          <li class="navlink">
+            <NuxtLink href="">Gallery</NuxtLink>
+          </li>
+          <li class="navlink">
+            <NuxtLink href="">Jewellery</NuxtLink>
+          </li>
+          <li class="navlink">
+            <NuxtLink href="">Collections</NuxtLink>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
 </template>
 
+<script setup lang="ts">
+const user = useUser();
+const ham = ref<HTMLElement | null>(null)
+const menu = ref<HTMLElement | null>(null)
+
+async function logout() {
+  const {data: res} = await useFetch('/api/auth/logout', {
+    method: 'GET',
+    headers: {
+      'bearer': user?.value?.token || ''
+    }
+  })
+
+  const response = res.value
+
+  if (response.statusCode === 200) {
+    user.value = null
+  } else {
+    alert(response.body)
+  }
+}
+
+function toggleHam() {
+  ham.value?.classList.toggle("active")
+  menu.value?.classList.toggle("inactive")
+}
+
+</script>
 <style scoped lang="scss">
 $transition-speed: 0.4s;
 
@@ -172,7 +200,7 @@ $transition-speed: 0.4s;
   }
 }
 
-// has to be placed here to work well - perhaps due to specifity issues
+// has to be placed here to work well - perhaps due to specificity issues
 .ham {
   display: none;
 }
@@ -188,6 +216,7 @@ $transition-speed: 0.4s;
         position: absolute;
         top: 10vh;
         left: 50%;
+        margin-top: 10px;
         transform: translateX(-50%);
 
         display: flex;
@@ -256,15 +285,15 @@ $transition-speed: 0.4s;
       }
 
       .nav-link-container {
-        top: 3rem;
+        top: 2.3rem;
+        margin-top: 2rem;
         padding-top: 15vh;
-        height: 3rem;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
         padding-bottom: 2rem;
-        height: 50vh;
+        height: 55vh;
         z-index: 10;
-        box-shadow: 0px 10px 20px -10px rgba(100, 100, 100, 0.75);
+        box-shadow: 0 10px 20px -10px rgba(100, 100, 100, 0.75);
+        background-color: rgba(223, 32, 143, 0.9);
+        backdrop-filter: blur(100px);
 
         transition: top ease-in-out $transition-speed;
 
@@ -275,13 +304,18 @@ $transition-speed: 0.4s;
           align-items: center;
           gap: 1rem;
           height: 30vh;
+          width: 100%;
+          margin-top: 1rem;
 
           .navlink {
+            width: 50%;
             a {
               color: var(--primary);
+              width: 100%;
               padding: 0.5rem 0.8rem;
+              display: block;
+              text-align: center;
               border: 1px solid var(--primary);
-              border-radius: 50px;
             }
           }
         }
@@ -350,28 +384,3 @@ $transition-speed: 0.4s;
   }
 }
 </style>
-<script setup>
-const user = useUser();
-
-async function logout() {
-  const {data: res} = await useFetch('/api/auth/logout', {
-    method: 'GET',
-    headers: {
-      'bearer': user?.value?.token
-    }
-  })
-
-  const response = res.value
-
-  if (response.statusCode === 200) {
-    user.value = null
-  } else {
-    alert(response.body)
-  }
-}
-
-onBeforeMount(() => {
-  const menu = document.querySelector('.menu');
-  const ham = document.querySelector('.ham');
-})
-</script>

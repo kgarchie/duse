@@ -31,13 +31,13 @@
         <div class="shop-card-icon">
           <Transition mode="out-in">
             <img src="/static/svgs/light-cart.svg" alt="" v-if="!carted" @click="cart">
-            <img src="/static/svgs/cart.svg" alt="" v-else>
+            <img src="/static/svgs/cart.svg" alt="" v-else @click="uncart">
           </Transition>
         </div>
         <div class="shop-card-icon">
           <Transition mode="out-in">
             <img src="/static/svgs/light-heart.svg" alt="" v-if="!liked" @click="like">
-            <img src="/static/svgs/heart.svg" alt="" v-else>
+            <img src="/static/svgs/heart.svg" alt="" v-else @click="unlike">
           </Transition>
         </div>
       </div>

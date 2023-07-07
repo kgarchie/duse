@@ -1,7 +1,6 @@
 import {defineComponent, h, PropType, ref} from "vue";
 import {LandingCarouselCard} from "#components";
-import '~/assets/css/carousel.css'
-import {ca} from "date-fns/locale";
+import '~/assets/css/carousel.css';
 
 export default defineComponent({
     name: "Carousel",
