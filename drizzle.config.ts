@@ -2,12 +2,11 @@ import type { Config } from "drizzle-kit";
 import path from "path";
 
 export const config = {
-    user: process.env.DB_USER ?? 'root',
-    password: process.env.DB_PASS ?? '',
-    database: process.env.DB_NAME ?? `${path.basename(process.cwd())}`,
-    poolMax: process.env.DB_CONNECTION_LIMIT ?? 10,
-    host: process.env.DB_HOST ?? 'localhost',
-    insecureAuth: process.env.insecureAuth || true
+    user: process.env.DEV ? process.env.DB_USER : process.env.DB_USER_PROD ?? 'root',
+    password: process.env.DEV ? process.env.DB_PASS : process.env.DB_PASS_PROD ?? '',
+    database: process.env.DEV ? process.env.DB_NAME : process.env.DB_NAME_PROD ?? `${path.basename(process.cwd())}`,
+    poolMax: process.env.DEV ? process.env.DB_CONNECTION_LIMIT : process.env.DB_CONNECTION_LIMIT_PROD  ?? 10,
+    host: process.env.DEV ? process.env.DB_HOST : process.env.DB_HOST_PROD ?? 'localhost'
 }
 
 export default {

@@ -9,9 +9,7 @@ const poolConnection: mysql.Pool = mysql.createPool({
     database: config.database,
     waitForConnections: true,
     connectionLimit: Number(config.poolMax),
-    ssl: {
-        rejectUnauthorized: false
-    }
+
 });
 
 const db: MySql2Database = drizzle(poolConnection);
