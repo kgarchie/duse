@@ -17,14 +17,14 @@
   "devDependencies": {
     "@types/node": "^18",
     "concurrently": "^8.2.0",
-    "drizzle-kit": "^0.18.1",
+    "drizzle-kit": "^0.19.3",
     "nuxt": "^3.4.3",
     "sass": "^1.63.3"
   },
   "dependencies": {
     "@types/nodemailer": "^6.4.8",
     "@types/uuid": "^9.0.2",
-    "drizzle-orm": "^0.26.5",
+    "drizzle-orm": "^0.27.0",
     "mysql2": "^3.3.4",
     "nodemailer": "^6.9.3",
     "nuxt-storage": "^1.2.2",
