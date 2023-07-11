@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1688718895604,
+      "tag": "0000_absent_butterfly",
+      "breakpoints": true
+    }
+  ]
+}
