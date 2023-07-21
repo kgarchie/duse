@@ -91,9 +91,9 @@ watch([password1, password2], () => {
 form {
   height: 400px;
   width: 500px;
-  max-width: 90%;
-  max-height: 90%;
-  margin: auto;
+  max-width: 90vw;
+  max-height: 90vh;
+  margin: auto auto 100px auto;
 
   small {
     font-size: 0.8rem;
