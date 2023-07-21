@@ -1,6 +1,5 @@
-import {mysqlTable, int, varchar, boolean, datetime} from "drizzle-orm/mysql-core";
-import {InferModel, relations, sql} from "drizzle-orm";
-import {tokens} from "~/db/schema/token";
+import {mysqlTable, varchar, boolean, datetime} from "drizzle-orm/mysql-core";
+import {InferModel, sql} from "drizzle-orm";
 
 export const users = mysqlTable('users', {
     user_id: varchar('user_id', {length: 32}).notNull().primaryKey(),
@@ -11,9 +10,5 @@ export const users = mysqlTable('users', {
     cratedAt: datetime('created_at').default(sql`CURRENT_TIMESTAMP`).notNull(),
     isAdmin: boolean('is_admin').default(false)
 })
-
-// export const usersRelations = relations(users, ({many}) => ({
-//     tokens: many(tokens)
-// }))
 
 export type User = InferModel<typeof users>

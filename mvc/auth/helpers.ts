@@ -1,4 +1,5 @@
 import {LoginCredentials, UpdatePasswordRequest, RegisterCredentials} from "~/types";
+import {createEphemeralUser} from "~/mvc/auth/queries";
 import {z} from "zod";
 import {H3Event} from "h3";
 import * as crypto from "crypto";
@@ -22,8 +23,10 @@ export function cleanLoginCredentials(data: LoginCredentials | null): LoginCrede
     }
 }
 
-export function cleanRegisterCredentials(data: RegisterCredentials): RegisterCredentials | null {
-    if (!data || !data.email || !data.password || !data.bearer) return null
+export async function cleanRegisterCredentials(data: RegisterCredentials): Promise<RegisterCredentials | null> {
+    if (!data || !data.email || !data.password) return null
+
+    if(!data.bearer) data.bearer = await createEphemeralUser().then((user) => user?.token)
 
     data.email = data.email.trim().toLowerCase()
     data.password = data.password.trim()

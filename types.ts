@@ -11,7 +11,7 @@ export type RegisterCredentials = {
     email: string;
     password: string;
     phone?: string;
-    bearer: string;
+    bearer?: string | null;
 }
 
 export type RegistrationError = {

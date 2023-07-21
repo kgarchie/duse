@@ -114,7 +114,7 @@ async function getUserByUserId(user_id: string): Promise<User & UserState | null
     return userState
 }
 
-async function createEphemeralUser(): Promise<User & UserState | null> {
+export async function createEphemeralUser(): Promise<User & UserState | null> {
     const bearer = uuidv4()
     let user_id = ulid()
     let user = {} as User & UserState
@@ -124,6 +124,7 @@ async function createEphemeralUser(): Promise<User & UserState | null> {
         isEphemeral: true
     }).catch(
         (e) => {
+            console.log(e)
             throw e as Error
         })
 
@@ -133,6 +134,7 @@ async function createEphemeralUser(): Promise<User & UserState | null> {
         type: TokenType.BEARER
     }).catch(
         (e) => {
+            console.log(e)
             throw e as Error
         })
 

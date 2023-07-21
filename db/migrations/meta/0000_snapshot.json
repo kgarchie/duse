@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "cecf5118-e56b-4d74-a086-adf3353c0003",
+  "id": "c1bcb217-6921-46dd-b49c-6c2a93046aa8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "inventory": {

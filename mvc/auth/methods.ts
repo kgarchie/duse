@@ -46,7 +46,7 @@ export async function register(event: H3Event): Promise<APIResponse> {
     data.bearer = readBearerToken(event) || ''
     let response = {} as APIResponse
 
-    const cleanedRegisterData = cleanRegisterCredentials(data)
+    const cleanedRegisterData = await cleanRegisterCredentials(data)
     if (!cleanedRegisterData) {
         response.statusCode = 400
         response.body = "Invalid credentials format"
